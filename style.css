@@ -303,7 +303,8 @@ body {
     margin-bottom: 5px;
 }
 
-.ui-field select {
+.ui-field select,
+.ui-field input {
     width: 100%;
     background: #f0f0f0;
     border: 1px solid #e0e0e0;
@@ -313,6 +314,7 @@ body {
     font-size: 0.85rem;
     outline: none;
     appearance: none;
+    font-family: var(--font-main);
 }
 
 .ui-features {
@@ -362,9 +364,34 @@ body {
 
 .results-container {
     perspective: 1000px;
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 20px;
+    max-width: 800px;
+    /* Limit width so it doesn't break the page */
+    margin-top: -20px;
+    /* Adjustment to align with search box */
+}
+
+/* Scrollbar styling for results */
+.results-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.results-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.results-container::-webkit-scrollbar-thumb {
+    background: #c5a059;
+    border-radius: 4px;
 }
 
 .results-card {
+    min-width: 300px;
+    /* Ensure cards don't shrink */
     width: 300px;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
@@ -374,7 +401,7 @@ body {
     animation: slideIn 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
     transform-origin: left center;
     opacity: 0;
-    transform: translateX(-20px) rotateY(-10deg);
+    transform: translateX(-20px);
 }
 
 @keyframes slideIn {
@@ -999,4 +1026,168 @@ body {
 
 .glitch-separator.reveal {
     transform: scaleX(1);
+}
+
+/* Dynamic Grid Layout */
+.dynamic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 3rem;
+    padding: 3rem 0;
+}
+
+.property-card {
+    background-color: #121212;
+    /* Slightly lighter than pure black */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+}
+
+.property-card:hover {
+    transform: translateY(-8px);
+    border-color: #c5a059;
+    box-shadow: 0 20px 40px rgba(197, 160, 89, 0.15);
+}
+
+.card-image {
+    position: relative;
+    height: 280px;
+    /* Taller image */
+    width: 100%;
+    overflow: hidden;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.property-card:hover .card-image img {
+    transform: scale(1.05);
+}
+
+.card-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(10, 10, 10, 0.85);
+    color: #c5a059;
+    padding: 6px 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(197, 160, 89, 0.3);
+}
+
+.card-content {
+    padding: 2rem;
+    flex: 1;
+    /* Pushes footer to bottom */
+    display: flex;
+    flex-direction: column;
+}
+
+.card-content h3 {
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    font-size: 1.6rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.2;
+}
+
+.card-location {
+    color: #999;
+    font-size: 0.85rem;
+    margin-bottom: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-location::before {
+    content: '📍';
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.card-desc {
+    color: #bbb;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    font-weight: 300;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex-grow: 1;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1.5rem;
+    margin-top: auto;
+}
+
+.card-price {
+    font-family: 'Playfair Display', serif;
+    color: #c5a059;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.btn-arrow {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.btn-arrow:hover {
+    background: #c5a059;
+    border-color: #c5a059;
+    color: #000;
+    transform: rotate(45deg);
+}
+
+.contact-info-footer {
+    display: flex;
+    gap: 20px;
+    color: #c5a059;
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+.loading-state,
+.no-listings,
+.error-msg {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #666;
+    padding: 4rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
 }

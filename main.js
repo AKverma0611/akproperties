@@ -1,4 +1,6 @@
 import './style.css'
+import { db } from './firebase-config.js';
+import { collection, getDocs } from "firebase/firestore";
 
 // Navbar Scroll Effect
 const navbar = document.querySelector('.navbar');
@@ -63,6 +65,69 @@ document.querySelectorAll('a[href^="#"], #discover-btn').forEach(anchor => {
     });
 });
 
+
+// State to hold fetched properties
+let allProperties = [];
+
+// Fetch Properties from Firestore
+async function loadProperties() {
+    const listingsContainer = document.getElementById('dynamic-listings');
+    if (!listingsContainer) return;
+
+    try {
+        const querySnapshot = await getDocs(collection(db, "properties"));
+        allProperties = [];
+        listingsContainer.innerHTML = '';
+
+        if (querySnapshot.empty) {
+            listingsContainer.innerHTML = '<p class="no-listings">Portfolio is currently being curated. Check back soon.</p>';
+            return;
+        }
+
+        querySnapshot.forEach((doc) => {
+            allProperties.push({ id: doc.id, ...doc.data() });
+        });
+
+        renderProperties(allProperties);
+
+    } catch (error) {
+        console.error("Error loading properties:", error);
+        listingsContainer.innerHTML = '<p class="error-msg">Unable to load listings at this time.</p>';
+    }
+}
+
+function renderProperties(properties) {
+    const listingsContainer = document.getElementById('dynamic-listings');
+    if (!listingsContainer) return;
+
+    listingsContainer.innerHTML = '';
+
+    properties.forEach(prop => {
+        const card = document.createElement('div');
+        card.className = 'property-card';
+        card.innerHTML = `
+            <div class="card-image">
+                <img src="${prop.imageUrl}" alt="${prop.title}">
+                <span class="card-badge">${prop.type}</span>
+            </div>
+            <div class="card-content">
+                <h3>${prop.title}</h3>
+                <p class="card-location">${prop.location}</p>
+                <p class="card-desc">${prop.description || ''}</p>
+                <div class="card-footer">
+                    <span class="card-price">${prop.price}</span>
+                    <button class="btn-arrow">↗</button>
+                </div>
+            </div>
+        `;
+        listingsContainer.appendChild(card);
+    });
+}
+
+// Initial Load
+loadProperties();
+
+
 // Search Logic
 const searchBtn = document.getElementById('search-btn');
 if (searchBtn) {
@@ -74,39 +139,62 @@ if (searchBtn) {
         searchBtn.innerHTML = 'Searching...';
         searchBtn.disabled = true;
 
-        const propertyImages = {
-            'Ultra-Luxury Villas': '/images/gen1.png',
-            'Sky Penthouses': '/images/gen2.png',
-            'Heritage Manors': '/images/master.png',
-            'Farmhouses': '/images/hero_villa.png'
-        };
+        // Simulate search delay for effect
+        setTimeout(() => {
+            // Flexible filtering logic for manual inputs
+            const results = allProperties.filter(p => {
+                const searchType = (type || '').toLowerCase().trim();
+                const searchLoc = (location || '').toLowerCase().trim();
 
-        const resultHTML = `
-            <div class="results-card">
-                <img src="${propertyImages[type] || '/images/hero.png'}" alt="${type}" class="result-image">
-                <div class="result-info">
-                    <h3>${type} Collection</h3>
-                    <p>${location}</p>
-                    <span class="result-price">Starts from ${price.split(' - ')[0]}</span>
-                    <div class="result-features">
-                        <span>4 Beds</span>
-                        <span>•</span>
-                        <span>5,000 sq.ft</span>
-                    </div>
-                    <div class="result-actions">
-                        <button class="btn-small btn-view">View Details</button>
-                        <button class="btn-small btn-contact">Enquire</button>
-                    </div>
-                </div>
-            </div>
-        `;
+                // Get property fields safely
+                const pType = (p.type || '').toLowerCase();
+                const pTitle = (p.title || '').toLowerCase();
+                const pLocation = (p.location || '').toLowerCase();
 
-        const resultsContainer = document.getElementById('results-container');
-        if (resultsContainer) {
-            resultsContainer.innerHTML = resultHTML;
+                // Check matches
+                // For Type input, we search both 'type' and 'title' to be helpful
+                const matchType = searchType === '' || pType.includes(searchType) || pTitle.includes(searchType);
+
+                const matchLoc = searchLoc === '' || pLocation.includes(searchLoc);
+
+                return matchType && matchLoc;
+            });
+
+            const resultsContainer = document.getElementById('results-container');
+            if (resultsContainer) {
+                if (results.length > 0) {
+                    // Render ALL results
+                    const resultsHTML = results.map(p => `
+                        <div class="results-card">
+                            <img src="${p.imageUrl}" alt="${p.title}" class="result-image">
+                            <div class="result-info">
+                                <h3>${p.title}</h3>
+                                <p>${p.location}</p>
+                                <span class="result-price">${p.price}</span>
+                                <div class="result-features">
+                                    <span>${p.type}</span>
+                                </div>
+                                <div class="result-actions">
+                                    <button class="btn-small btn-view">View Listing</button>
+                                    <button class="btn-small btn-contact">Enquire</button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    resultsContainer.innerHTML = resultsHTML;
+                } else {
+                    resultsContainer.innerHTML = `
+                        <div class="ui-card" style="text-align: center; padding: 2rem;">
+                            <p>No exclusive properties found matching your criteria.</p>
+                        </div>
+                    `;
+                }
+            }
+
             searchBtn.innerHTML = 'Search Estates';
             searchBtn.disabled = false;
-        }
+        }, 1000);
     });
 }
 

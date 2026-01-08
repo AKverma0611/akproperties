@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AK Admin | Restricted Access</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/admin.css">
+</head>
+
+<body>
+
+    <!-- Auth Section -->
+    <div id="auth-section" class="auth-container">
+        <div class="auth-box">
+            <h2 class="auth-title">AK<span>ADMIN</span></h2>
+            <form id="login-form">
+                <div class="input-group">
+                    <input type="email" id="email" placeholder="Admin Email" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-full">Access Dashboard</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div id="dashboard" class="dashboard-container" style="display: none;">
+        <nav class="admin-nav">
+            <div class="admin-logo">AK<span>ADMIN</span></div>
+            <button onclick="logout()" class="btn btn-outline btn-sm">Logout</button>
+        </nav>
+
+        <div class="admin-content">
+            <!-- Add Property Form -->
+            <section class="admin-card add-property-section">
+                <h3>Add New Listing</h3>
+                <form id="property-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Property Title</label>
+                            <input type="text" id="prop-title" required placeholder="e.g. The Sky Villa">
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" id="prop-location" required placeholder="e.g. Vijay Nagar, Indore">
+                        </div>
+                        <div class="form-group">
+                            <label>Price</label>
+                            <input type="text" id="prop-price" required placeholder="e.g. ₹5.5 Cr">
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="prop-type">
+                                <option>Ultra-Luxury Villas</option>
+                                <option>Sky Penthouses</option>
+                                <option>Heritage Manors</option>
+                                <option>Farmhouses</option>
+                                <option value="Other">Other (Type Custom)</option>
+                            </select>
+                            <input type="text" id="prop-type-custom" placeholder="Enter Custom Category"
+                                style="display: none; margin-top: 10px;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="prop-desc" rows="3" required
+                            placeholder="Description of the property..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Property Images (Select Multiple)</label>
+                        <input type="file" id="prop-image" accept="image/*" multiple required>
+                    </div>
+
+                    <button type="submit" class="btn btn-gold">Add Listing</button>
+                </form>
+            </section>
+
+            <!-- Property List -->
+            <section class="admin-card list-section">
+                <h3>Active Listings</h3>
+                <div id="property-list" class="admin-property-grid">
+                    <!-- Dynamic Items -->
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script type="module" src="/admin.js"></script>
+</body>
+
+</html>

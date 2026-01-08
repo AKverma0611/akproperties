@@ -52,29 +52,15 @@
               </div>
               <div class="ui-field">
                 <label>Property Type</label>
-                <select id="prop-type">
-                  <option>Ultra-Luxury Villas</option>
-                  <option>Sky Penthouses</option>
-                  <option>Heritage Manors</option>
-                  <option>Farmhouses</option>
-                </select>
+                <input type="text" id="prop-type" placeholder="e.g. Villas, Penthouses">
               </div>
               <div class="ui-field">
                 <label>Location</label>
-                <select id="prop-location">
-                  <option>Vijay Nagar, Indore</option>
-                  <option>Old Palasia, Indore</option>
-                  <option>Saket Nagar, Indore</option>
-                  <option>Race Course Road, Indore</option>
-                </select>
+                <input type="text" id="prop-location" placeholder="e.g. Vijay Nagar, Indore">
               </div>
               <div class="ui-field">
                 <label>Price Range</label>
-                <select id="prop-price">
-                  <option>₹1 Cr - ₹5 Cr</option>
-                  <option>₹5 Cr - ₹15 Cr</option>
-                  <option>₹15 Cr+</option>
-                </select>
+                <input type="text" id="prop-price" placeholder="e.g. ₹5 Cr">
               </div>
               <div class="ui-footer">
                 <button class="btn btn-gold w-full mt-10" id="search-btn">Search Estates</button>
@@ -118,26 +104,10 @@
             investment potential in the Indian market.</p>
         </div>
 
-        <div class="generation-grid">
-          <div class="gen-card black-card">
-            <h3>The Vijay Nagar Sky Villa</h3>
-            <p>A masterpiece of modern design featuring panoramic city views and bespoke interior finishes
-              throughout
-              the entire top floor.</p>
-            <div class="card-footer">
-              <span>Vijay Nagar, Indore</span>
-              <div class="arrow-btn">↗</div>
-            </div>
-          </div>
-          <div class="gen-image-card main-img">
-            <img id="gen-img-1" src="/images/gen1.png" alt="Indore Skyline Penthouse">
-          </div>
-          <div class="gen-image-card small-img">
-            <img id="gen-img-2" src="/images/gen2.png" alt="Luxury Indore Villa Interior">
-          </div>
-          <div class="gen-card black-card small-text">
-            <h3>The Saket Nagar Estate</h3>
-            <p>An architectural statement of minimalism and heritage, nestled in the prestigious lanes of Indore.</p>
+        <div id="dynamic-listings" class="generation-grid dynamic-grid">
+          <!-- Properties will be injected here by main.js -->
+          <div class="loading-state">
+            <p>Loading Exclusive Portfolio...</p>
           </div>
         </div>
         <div class="btn-container">
@@ -195,9 +165,12 @@
         </div>
         <div class="footer-bottom">
           <span>&copy; 2026 AK Properties India | Global Luxury Experts</span>
-          <span>concierge@akproperties.in</span>
+          <div class="contact-info-footer">
+            <span>📞 +91 94247 66987</span>
+            <span>📷 @ak_properties_09</span>
+          </div>
           <div class="social-links">
-            <a href="#">Instagram</a>
+            <a href="https://instagram.com/ak_properties_09" target="_blank">Instagram</a>
             <a href="#">Linkedin</a>
           </div>
         </div>
